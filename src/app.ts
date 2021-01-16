@@ -14,7 +14,7 @@ app.use("/user", userRoutes);
 
 app.use(
   (error: Error | any, req: Request, res: Response, next: NextFunction) => {
-    console.log(error);
+    console.log("Error generic", error);
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;

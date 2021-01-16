@@ -7,6 +7,8 @@ const router = Router();
 
 router.get("/posts", isAuth, BlogController.getPosts);
 
+router.get("/posts/:postId", isAuth, BlogController.getPost);
+
 router.post(
   "/posts",
   isAuth,

@@ -19,6 +19,30 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getPost = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { postId } = req.params;
+    const post = await Post.findById(postId);
+    if (!post) {
+      res.status(401).json({
+        message: "No exists post",
+        error: true,
+      });
+    }
+    return res.status(200).json({
+      message: "Post finded",
+      data: {
+        post,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something happens!",
+      error: error,
+    });
+  }
+};
+
 const postPost = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const errors = validationResult(req);
@@ -49,4 +73,4 @@ const postPost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { getPosts, postPost };
+export { getPosts, postPost, getPost };
