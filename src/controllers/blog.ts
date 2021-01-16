@@ -37,7 +37,9 @@ const postPost = async (req: Request, res: Response, next: NextFunction) => {
 
     return res.status(201).json({
       message: "Post created successfully!",
-      post: postSaved,
+      data: {
+        post: postSaved,
+      },
     });
   } catch (error) {
     return res.status(500).json({

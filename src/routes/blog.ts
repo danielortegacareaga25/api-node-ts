@@ -1,13 +1,15 @@
 import { Router } from "express";
 import { check } from "express-validator";
+import { isAuth } from "./../middleware/auth";
 import * as BlogController from "./../controllers/blog";
 
 const router = Router();
 
-router.get("/posts", BlogController.getPosts);
+router.get("/posts", isAuth, BlogController.getPosts);
 
 router.post(
   "/posts",
+  isAuth,
   [
     check("title", "El titulo es requerido")
       .trim()
