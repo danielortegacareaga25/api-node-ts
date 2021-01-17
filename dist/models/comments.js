@@ -1,13 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = void 0;
+exports.Comment = void 0;
 const mongoose_1 = require("mongoose");
-const PostSchema = new mongoose_1.Schema({
-    title: { type: String, required: true },
+const CommentSchema = new mongoose_1.Schema({
     content: { type: String, required: true },
     creator: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "User",
+        require: true,
+    },
+    post: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Post",
         require: true,
     },
     createAt: {
@@ -15,6 +19,6 @@ const PostSchema = new mongoose_1.Schema({
         default: Date.now,
     },
 });
-const Post = mongoose_1.model("Post", PostSchema);
-exports.Post = Post;
-//# sourceMappingURL=posts.js.map
+const Comment = mongoose_1.model("Comment", CommentSchema);
+exports.Comment = Comment;
+//# sourceMappingURL=comments.js.map

@@ -22,20 +22,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const auth_1 = require("./../middleware/auth");
-const BlogController = __importStar(require("./../controllers/blog"));
+const CommentController = __importStar(require("./../controllers/comment"));
 const router = express_1.Router();
-router.get("/posts", auth_1.isAuth, BlogController.getPosts);
-router.get("/posts/:postId", auth_1.isAuth, BlogController.getPost);
-router.post("/posts", auth_1.isAuth, [
-    express_validator_1.check("title", "El titulo es requerido")
+router.get("/:postId", auth_1.isAuth, CommentController.getCommentsByPost);
+router.post("/create", auth_1.isAuth, [
+    express_validator_1.check("content", "El contenido el obligatorio")
         .trim()
+        .not()
+        .isEmpty()
         .isLength({ min: 5 })
-        .withMessage("El titulo no es valido, debe tener minimo 5 caracteres"),
-    express_validator_1.check("content")
-        .trim()
-        .isLength({ min: 5 })
-        .withMessage("El contenido no es valido, debe tener minimo 5 caracteres"),
-], BlogController.postPost);
-router.get("/myposts", auth_1.isAuth, BlogController.getMyPosts);
+        .withMessage("Debe tener minimo 5 caracteres el comentario"),
+    express_validator_1.check("post", "El id del post el obligatorio").trim().not().isEmpty(),
+], CommentController.postComment);
 exports.default = router;
-//# sourceMappingURL=blog.js.map
+//# sourceMappingURL=comment.js.map

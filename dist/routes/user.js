@@ -21,21 +21,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const express_validator_1 = require("express-validator");
-const auth_1 = require("./../middleware/auth");
-const BlogController = __importStar(require("./../controllers/blog"));
+const UserController = __importStar(require("./../controllers/user"));
 const router = express_1.Router();
-router.get("/posts", auth_1.isAuth, BlogController.getPosts);
-router.get("/posts/:postId", auth_1.isAuth, BlogController.getPost);
-router.post("/posts", auth_1.isAuth, [
-    express_validator_1.check("title", "El titulo es requerido")
+router.post("/signup", [
+    express_validator_1.check("email", "El email es obligatorio")
+        .isEmail()
+        .withMessage("El email no es valido")
+        .normalizeEmail(),
+    express_validator_1.check("password", "La contraseña es obligatoria")
         .trim()
         .isLength({ min: 5 })
-        .withMessage("El titulo no es valido, debe tener minimo 5 caracteres"),
-    express_validator_1.check("content")
+        .withMessage("La contraseña debe ser minimo de 5 caracteres"),
+    express_validator_1.check("name", "El nombre el obligatorio").trim().not().isEmpty(),
+], UserController.postUser);
+router.post("/login", [
+    express_validator_1.check("email", "El correo el obligatorio").isEmail(),
+    express_validator_1.check("password", "La contraseña es obligatoria")
         .trim()
         .isLength({ min: 5 })
-        .withMessage("El contenido no es valido, debe tener minimo 5 caracteres"),
-], BlogController.postPost);
-router.get("/myposts", auth_1.isAuth, BlogController.getMyPosts);
+        .withMessage("La contraseña debe ser minimo de 5 caracteres"),
+], UserController.loginUser);
 exports.default = router;
-//# sourceMappingURL=blog.js.map
+//# sourceMappingURL=user.js.map

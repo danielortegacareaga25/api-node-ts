@@ -24,14 +24,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
+const cors_1 = __importDefault(require("cors"));
 dotenv.config();
 const database_1 = require("./database/database");
 const blog_1 = __importDefault(require("./routes/blog"));
+const user_1 = __importDefault(require("./routes/user"));
+const comment_1 = __importDefault(require("./routes/comment"));
 const app = express_1.default();
+app.use(cors_1.default());
 app.use(express_1.default.json());
 app.use("/blog", blog_1.default);
+app.use("/user", user_1.default);
+app.use("/comment", comment_1.default);
 app.use((error, req, res, next) => {
-    console.log(error);
+    console.log("Error generic", error);
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;
