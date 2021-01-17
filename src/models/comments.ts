@@ -1,18 +1,23 @@
 import { model, Schema, Model, Document } from "mongoose";
+import { IPost } from "./posts";
 import { IUser } from "./user";
 
-export interface IPost extends Document {
-  title: String;
+interface IComment extends Document {
   content: String;
   creator: IUser;
+  post: IPost;
 }
 
-const PostSchema: Schema = new Schema({
-  title: { type: String, required: true },
+const CommentSchema: Schema = new Schema({
   content: { type: String, required: true },
   creator: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    require: true,
+  },
+  post: {
+    type: Schema.Types.ObjectId,
+    ref: "Post",
     require: true,
   },
   createAt: {
@@ -21,6 +26,6 @@ const PostSchema: Schema = new Schema({
   },
 });
 
-const Post: Model<IPost> = model("Post", PostSchema);
+const Comment: Model<IComment> = model("Comment", CommentSchema);
 
-export { Post };
+export { Comment };

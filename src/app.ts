@@ -5,12 +5,14 @@ import { connect } from "./database/database";
 
 import blogRoutes from "./routes/blog";
 import userRoutes from "./routes/user";
+import commentRoutes from "./routes/comment";
 
 const app = express();
 
 app.use(express.json());
 app.use("/blog", blogRoutes);
 app.use("/user", userRoutes);
+app.use("/comment", commentRoutes);
 
 app.use(
   (error: Error | any, req: Request, res: Response, next: NextFunction) => {

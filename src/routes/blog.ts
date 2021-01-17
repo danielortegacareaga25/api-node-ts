@@ -25,4 +25,6 @@ router.post(
   BlogController.postPost
 );
 
+router.get("/myposts", isAuth, BlogController.getMyPosts);
+
 export default router;

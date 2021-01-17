@@ -4,7 +4,10 @@ import { Post } from "./../models/posts";
 
 const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().populate({
+      path: "creator",
+      select: "name",
+    });
     return res.status(201).json({
       message: "Get all posts successfully!",
       data: {
@@ -43,6 +46,24 @@ const getPost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getMyPosts = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.body;
+    const posts = await Post.find({ creator: userId });
+    return res.status(200).json({
+      message: "Get all posts successfully!",
+      data: {
+        posts: posts,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something happens!",
+      error: error,
+    });
+  }
+};
+
 const postPost = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const errors = validationResult(req);
@@ -52,10 +73,11 @@ const postPost = async (req: Request, res: Response, next: NextFunction) => {
         error: errors.array(),
       });
     }
-    const { title, content } = req.body;
+    const { title, content, userId } = req.body;
     const post = new Post({
       title,
       content,
+      creator: userId,
     });
     const postSaved = await post.save();
 
@@ -73,4 +95,4 @@ const postPost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { getPosts, postPost, getPost };
+export { getPosts, postPost, getPost, getMyPosts };

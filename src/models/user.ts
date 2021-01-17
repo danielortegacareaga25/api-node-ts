@@ -1,10 +1,11 @@
 import { model, Schema, Model, Document } from "mongoose";
 
-interface IUser extends Document {
+export interface IUser extends Document {
   email: String;
   password: String;
   name: String;
   status: boolean;
+  createAt: Date;
 }
 
 const UserSchema: Schema = new Schema({
@@ -23,6 +24,10 @@ const UserSchema: Schema = new Schema({
   status: {
     type: String,
     default: true,
+  },
+  createAd: {
+    type: Date,
+    default: Date.now,
   },
 });
 
