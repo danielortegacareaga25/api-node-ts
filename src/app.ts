@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import * as dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 import { connect } from "./database/database";
 
@@ -8,6 +9,8 @@ import userRoutes from "./routes/user";
 import commentRoutes from "./routes/comment";
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use("/blog", blogRoutes);
